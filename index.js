@@ -1,6 +1,7 @@
 function getWeather() {
     const apiKey = 'f562c213ec3e43f243b37e0395157d99';
     const city = document.getElementById('city').value;
+    const cityInput = city.value;
 
     if (!city) {
         alert('Please enter a city');
@@ -14,6 +15,7 @@ function getWeather() {
         .then(response => response.json())
         .then(data => {
             displayWeather(data);
+            city.value = '';
         })
         .catch(error => {
             console.error('Error fetching current weather data:', error);
@@ -51,7 +53,8 @@ function displayWeather(data) {
         const iconUrl = `https://openweathermap.org/img/wn/${iconCode}@4x.png`;
 
         const temperatureHtml = `<p>${temperature}°C</p>`;
-        const weatherHTML = temperatureHtml;
+        const cityNameHtml = `<h3>${cityName}</h3>`;
+        const weatherHTML = cityNameHtml + temperatureHtml;
 
         weatherInfoDiv.innerHTML = weatherHTML;
         weatherIcon.src = iconUrl;
