@@ -1,7 +1,7 @@
 function getWeather() {
     const apiKey = 'f562c213ec3e43f243b37e0395157d99';
-    const city = document.getElementById('city').value;
-    const cityInput = city.value;
+    const cityInput = document.getElementById('city');
+    const city = cityInput.value;
 
     if (!city) {
         alert('Please enter a city');
@@ -15,7 +15,7 @@ function getWeather() {
         .then(response => response.json())
         .then(data => {
             displayWeather(data);
-            city.value = '';
+            cityInput.value = '';
         })
         .catch(error => {
             console.error('Error fetching current weather data:', error);
@@ -47,13 +47,13 @@ function displayWeather(data) {
         weatherInfoDiv.innerHTML = `<p>${data.message}</p>`;
     } else {
         const cityName = data.name;
-        const temperature = Math.round(data.main.temp - 273.15); // Convert Kelvin to Celsius
+        const temperature = Math.round(data.main.temp - 273.15);
         const iconCode = data.weather[0].icon;
         const description = data.weather[0].description;
         const iconUrl = `https://openweathermap.org/img/wn/${iconCode}@4x.png`;
 
         const temperatureHtml = `<p>${temperature}°C</p>`;
-        const cityNameHtml = `<h3>${cityName}</h3>`;
+        const cityNameHtml = `<h3 style="color: white;">${cityName}</h3>`;
         const weatherHTML = cityNameHtml + temperatureHtml;
 
         weatherInfoDiv.innerHTML = weatherHTML;
@@ -66,12 +66,14 @@ function displayWeather(data) {
 
 function displayHourlyForecast(hourlyData) {
     const hourlyForecastDiv = document.getElementById('hourly-forecast');
-    const next24Hours = hourlyData.slice(0, 8); // 3-hour intervals, so 8 gives the next 24 hours
+    const next24Hours = hourlyData.slice(0, 8);
+
+    hourlyForecastDiv.innerHTML = '';
 
     next24Hours.forEach(item => {
-        const dateTime = new Date(item.dt * 1000); // Convert timestamp to milliseconds
+        const dateTime = new Date(item.dt * 1000);
         const hour = dateTime.getHours();
-        const temperature = Math.round(item.main.temp - 273.15); // Convert Kelvin to Celsius
+        const temperature = Math.round(item.main.temp - 273.15);
         const iconCode = item.weather[0].icon;
         const iconUrl = `https://openweathermap.org/img/wn/${iconCode}.png`;
 
@@ -90,4 +92,3 @@ function showImage() {
     const weatherIcon = document.getElementById("weather-icon");
     weatherIcon.style.display = 'block';
 }
-
